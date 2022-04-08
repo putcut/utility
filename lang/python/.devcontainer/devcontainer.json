@@ -1,0 +1,25 @@
+{
+  "name": "Python 3",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "VARIANT": "3.9-bullseye"
+    }
+  },
+  "settings": {
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash",
+        "icon": "terminal-bash"
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-python"
+  ],
+  "postCreateCommand": "pip3 install -r requirements.txt",
+  "remoteUser": "vscode"
+}
