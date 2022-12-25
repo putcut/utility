@@ -1,25 +1,23 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.202.1/containers/java/.devcontainer/base.Dockerfile
+# https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user#_creating-a-nonroot-user
+# https://www.juniordevmind.com/blog/How-to-setup-java-development-environment-with-docker-dev-container
+FROM eclipse-temurin:17.0.5_8-jdk
 
-# [Choice] Java version (use -bullseye variants on local arm64/Apple Silicon): 11, 16, 11-bullseye, 16-bullseye, 11-buster, 16-buster
-ARG VARIANT="17-jdk-bullseye"
-FROM mcr.microsoft.com/vscode/devcontainers/java:${VARIANT}
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-# [Option] Install Maven
-ARG INSTALL_MAVEN="false"
-ARG MAVEN_VERSION=""
-# [Option] Install Gradle
-ARG INSTALL_GRADLE="false"
-ARG GRADLE_VERSION=""
-RUN if [ "${INSTALL_MAVEN}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/sdkman/bin/sdkman-init.sh && sdk install maven \"${MAVEN_VERSION}\""; fi \
-    && if [ "${INSTALL_GRADLE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/sdkman/bin/sdkman-init.sh && sdk install gradle \"${GRADLE_VERSION}\""; fi
+SHELL ["/bin/bash", "-c"]
 
-# [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
-ARG NODE_VERSION="none"
-RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --shell /bin/bash --gid $USER_GID -m $USERNAME \
+    && apt update \
+    && apt install -y zip sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+RUN su $USERNAME -c \
+    'curl -s "https://get.sdkman.io" | bash \
+    && source "${HOME}/.sdkman/bin/sdkman-init.sh" \
+    && sdk install gradle'
 
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+USER $USERNAME
