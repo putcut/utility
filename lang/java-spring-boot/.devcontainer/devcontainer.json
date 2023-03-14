@@ -1,0 +1,25 @@
+{
+  "image": "eclipse-temurin:17.0.6_10-jdk",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "false",
+      "username": "vscode",
+      "uid": "1000",
+      "gid": "1000"
+    },
+    "ghcr.io/devcontainers-contrib/features/gradle-sdkman:2": {
+      "jdkVersion": "none"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-gradle",
+        "vscjava.vscode-lombok",
+        "vmware.vscode-boot-dev-pack"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}
