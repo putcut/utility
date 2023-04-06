@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/io.gatling/gatling-core-java
+    implementation 'io.gatling:gatling-core-java:3.9.3'
+    // https://mvnrepository.com/artifact/io.gatling/gatling-http-java
+    implementation 'io.gatling:gatling-http-java:3.9.3'
+}

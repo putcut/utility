@@ -1,0 +1,23 @@
+version: "3"
+services:
+  gatling:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../src/main/java/gatling/:/workspace/gatling-charts-highcharts-bundle-3.9.3/user-files
+      - gatling-results:/workspace/gatling-charts-highcharts-bundle-3.9.3/results/
+    command: /bin/bash
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8888:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - gatling-results:/var/html/
+
+volumes:
+  gatling-results:
