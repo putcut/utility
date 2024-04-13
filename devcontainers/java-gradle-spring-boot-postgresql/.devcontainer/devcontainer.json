@@ -1,0 +1,26 @@
+{
+    // "image": "mcr.microsoft.com/vscode/devcontainers/base:debian",
+    "dockerComposeFile": "compose.yml",
+    "service": "app",
+    "runServices": [
+        "db"
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "latest",
+            "jdkDistro": "tem",
+            "installGradle": "true",
+            "gradleVersion": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vscjava.vscode-gradle",
+                "vmware.vscode-boot-dev-pack"
+            ]
+        }
+    },
+    "workspaceFolder": "/workspace"
+}

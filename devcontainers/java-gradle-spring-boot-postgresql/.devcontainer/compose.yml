@@ -1,0 +1,20 @@
+version: "3"
+services:
+  app:
+    image: mcr.microsoft.com/vscode/devcontainers/base:debian
+    tty: true
+    working_dir: /workspace
+    volumes:
+      - ../:/workspace
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/my-postgresql.conf
+    command: -c "config_file=/etc/postgresql/my-postgresql.conf"
+volumes:
+  dbdata:
